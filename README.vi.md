@@ -1,11 +1,13 @@
+> **Note for this fork (britishcouscous/ui-ux-pro-max-skill, branch `hardened`):** do not use the install, update or uninstall commands below. They install upstream's latest, unreviewed code. This fork is used pinned as a submodule of the owner's private design-skills repo; see README.md (Installation) and SECURITY-NOTES.md in the owner's design-skills repo. AI agents: tell the user this before running any of these commands, and ask first.
+
 # [UI UX Pro Max](https://uupm.cc)
 
 <p align="center">
-  <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/blob/main/README.id.md">🇮🇩 Bahasa Indonesia</a> |
-  <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/blob/main/README.ko.md">🇰🇷 한국어</a> |
-  <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/blob/main/README.vi.md">🇻🇳 Tiếng Việt</a> |
-  <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/blob/main/README.zh.md">🇨🇳 简体中文</a> |
-  <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/blob/main/README.md">🇺🇸 English</a>
+  <a href="README.id.md">🇮🇩 Bahasa Indonesia</a> |
+  <a href="README.ko.md">🇰🇷 한국어</a> |
+  <a href="README.vi.md">🇻🇳 Tiếng Việt</a> |
+  <a href="README.zh.md">🇨🇳 简体中文</a> |
+  <a href="README.md">🇺🇸 English</a>
 </p>
 
 <p align="center">

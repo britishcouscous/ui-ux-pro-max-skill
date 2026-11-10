@@ -8,6 +8,17 @@ metadata:
   version: "2.1.0"
 ---
 
+## Before running this skill's scripts
+
+Before running `scripts/logo/generate.py`, `scripts/cip/generate.py` or `scripts/icon/generate.py`, tell the user:
+
+- They send the prompt and brand name (and, with `--logo`, the logo image) to the chosen image service: Gemini, Atlas Cloud or MuAPI.
+- From `<skill>/.env`, `~/.claude/skills/.env` and `~/.claude/.env` they load only the names they use: logo `GEMINI_API_KEY`, `ATLASCLOUD_API_KEY`, `MUAPI_API_KEY` and the optional `GEMINI_FLASH_IMAGE_MODEL` / `GEMINI_PRO_IMAGE_MODEL`; CIP `GEMINI_API_KEY`, `GOOGLE_API_KEY` and the same two model ids; icon `GEMINI_API_KEY`. Anything already set in the shell is used as is, including the Google SDK's and Python's standard settings such as `HTTPS_PROXY`.
+
+Before running any `npx shadcn` command (for example in references/design-routing.md), tell the user it downloads the `shadcn` package from npm, and ask first.
+
+Before sending an unreleased brand name or logo, ask the user to confirm. See SECURITY-NOTES.md in the owner's design-skills repo.
+
 # Design
 
 Unified design skill: brand, tokens, UI, logo, CIP, slides, banners, social photos, icons.
@@ -72,7 +83,7 @@ python3 scripts/logo/generate.py --brand "TechFlow" --provider muapi
 python3 scripts/logo/generate.py --brand "TechFlow" --provider muapi --muapi-model nano-banana-pro
 ```
 
-**IMPORTANT:** When scripts fail, try to fix them directly.
+When a script fails, show the user the error and ask before changing any file under scripts/. Never weaken load_env, _SafeRedirectHandler, _validate_public_https_url or the MuAPI host check: they are security fixes.
 
 After generation, **ALWAYS** ask user about HTML preview via `AskUserQuestion`. If yes, use the bundled `ui-ux-pro-max` skill for the gallery.
 

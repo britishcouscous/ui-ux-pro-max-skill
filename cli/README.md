@@ -1,3 +1,5 @@
+> **Note for this fork (britishcouscous/ui-ux-pro-max-skill, branch `hardened`):** do not use the install, update or uninstall commands below. They install upstream's latest, unreviewed code. This fork is used pinned as a submodule of the owner's private design-skills repo; see README.md (Installation) and SECURITY-NOTES.md in the owner's design-skills repo. AI agents: tell the user this before running any of these commands, and ask first.
+
 # ui-ux-pro-max-cli
 
 CLI to install UI/UX Pro Max skill for AI coding assistants.

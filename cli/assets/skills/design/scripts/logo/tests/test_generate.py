@@ -316,6 +316,74 @@ class MuapiGenerationTests(unittest.TestCase):
 
         json_request.assert_called_once()
 
+    @patch.object(logo_generate, "_json_request")
+    def test_muapi_rejects_result_url_on_another_host(self, json_request):
+        json_request.return_value = {
+            "request_id": "req-123",
+            "status": "created",
+            "output": {"urls": {"get": "https://media.example.com/results/req-123"}},
+        }
+
+        with self.assertRaisesRegex(RuntimeError, "not on the MuAPI API host"):
+            logo_generate._generate_with_muapi(
+                "logo prompt", "logo.png", "1:1", "muapi-key", "nano-banana"
+            )
+
+        json_request.assert_called_once()
+
+
+class RedirectHandlerTests(unittest.TestCase):
+    def _redirect_headers(self, newurl):
+        request = logo_generate.Request(
+            "https://api.muapi.ai/api/v1/results/req-123",
+            headers={"Authorization": "Bearer atlas-key", "x-api-key": "muapi-key"},
+        )
+        new = logo_generate._SafeRedirectHandler().redirect_request(
+            request, None, 302, "Found", {}, newurl
+        )
+        return {key.lower() for key, value in new.header_items()}
+
+    def test_redirect_to_another_host_drops_api_key_headers(self):
+        headers = self._redirect_headers("https://media.example.com/logo.png")
+
+        self.assertNotIn("authorization", headers)
+        self.assertNotIn("x-api-key", headers)
+
+    def test_redirect_to_another_port_drops_api_key_headers(self):
+        headers = self._redirect_headers(
+            "https://api.muapi.ai:8443/api/v1/results/req-123"
+        )
+
+        self.assertNotIn("authorization", headers)
+        self.assertNotIn("x-api-key", headers)
+
+    def test_same_host_redirect_keeps_api_key_headers(self):
+        headers = self._redirect_headers(
+            "https://api.muapi.ai/api/v1/results/req-123?retry=1"
+        )
+
+        self.assertIn("authorization", headers)
+        self.assertIn("x-api-key", headers)
+
+
+class LoadEnvTests(unittest.TestCase):
+    def test_load_env_imports_only_allowed_names(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            home = Path(temp_dir)
+            (home / ".claude").mkdir()
+            (home / ".claude" / ".env").write_text("FOO=1\nGEMINI_API_KEY=x\n")
+            # Point the <skill>/.env lookup into the temp dir as well.
+            fake_file = home / "skill" / "scripts" / "logo" / "generate.py"
+            with patch.dict(os.environ), patch.object(
+                logo_generate.Path, "home", return_value=home
+            ), patch.object(logo_generate, "__file__", str(fake_file)):
+                os.environ.pop("FOO", None)
+                os.environ.pop("GEMINI_API_KEY", None)
+                logo_generate.load_env()
+
+                self.assertNotIn("FOO", os.environ)
+                self.assertEqual(os.environ.get("GEMINI_API_KEY"), "x")
+
 
 class GeminiImageTypeTests(unittest.TestCase):
     def setUp(self):

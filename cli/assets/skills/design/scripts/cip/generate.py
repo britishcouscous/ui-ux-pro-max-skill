@@ -69,6 +69,13 @@ def load_logo_image(logo_path):
 # Load environment variables
 def load_env():
     """Load environment variables from .env files"""
+    # Only the names this script reads, so other .env lines stay out of os.environ.
+    allowed_keys = {
+        "GEMINI_API_KEY",
+        "GOOGLE_API_KEY",
+        "GEMINI_FLASH_IMAGE_MODEL",
+        "GEMINI_PRO_IMAGE_MODEL"
+    }
     env_paths = [
         Path(__file__).parent.parent.parent / ".env",
         Path.home() / ".claude" / "skills" / ".env",
@@ -81,7 +88,7 @@ def load_env():
                     line = line.strip()
                     if line and not line.startswith("#") and "=" in line:
                         key, value = line.split("=", 1)
-                        if key not in os.environ:
+                        if key in allowed_keys and key not in os.environ:
                             os.environ[key] = value.strip('"\'')
 
 load_env()
