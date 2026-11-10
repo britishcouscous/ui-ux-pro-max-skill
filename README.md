@@ -1,11 +1,11 @@
 # [UI UX Pro Max](https://uupm.cc)
 
 <p align="center">
-  <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/blob/main/README.id.md">🇮🇩 Bahasa Indonesia</a> |
-  <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/blob/main/README.ko.md">🇰🇷 한국어</a> |
-  <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/blob/main/README.vi.md">🇻🇳 Tiếng Việt</a> |
-  <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/blob/main/README.zh.md">🇨🇳 简体中文</a> |
-  <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/blob/main/README.md">🇺🇸 English</a>
+  <a href="README.id.md">🇮🇩 Bahasa Indonesia</a> |
+  <a href="README.ko.md">🇰🇷 한국어</a> |
+  <a href="README.vi.md">🇻🇳 Tiếng Việt</a> |
+  <a href="README.zh.md">🇨🇳 简体中文</a> |
+  <a href="README.md">🇺🇸 English</a>
 </p>
 
 <p align="center">
@@ -250,78 +250,15 @@ Many users ask about the differences between the open-source and premium version
 
 ## Installation
 
-### Using Claude Marketplace (Claude Code)
+This fork is used pinned, as a git submodule of the owner's private design-skills repo, on branch `hardened`. Do not install it with upstream's commands (`/plugin marketplace add`, `/plugin install`, `npm install -g ui-ux-pro-max-cli`, `npx ui-ux-pro-max-cli`, `uipro init`): they install upstream's latest, unreviewed code. `uipro update` installs the newest CLI version globally without asking, and `uipro uninstall` deletes skill folders by name.
 
-Install directly in Claude Code with two commands:
+Before running any of those commands, tell the user they bypass this pinned fork, and ask first.
 
-```
-/plugin marketplace add nextlevelbuilder/ui-ux-pro-max-skill
-/plugin install ui-ux-pro-max@ui-ux-pro-max-skill
-```
-
-### Using CLI (Recommended)
-
-```bash
-# Install CLI globally
-npm install -g ui-ux-pro-max-cli
-
-# Go to your project
-cd /path/to/your/project
-
-# Install for your AI assistant
-uipro init --ai claude      # Claude Code
-uipro init --ai cursor      # Cursor
-uipro init --ai windsurf    # Windsurf
-uipro init --ai antigravity # Antigravity
-uipro init --ai copilot     # GitHub Copilot
-uipro init --ai kiro        # Kiro
-uipro init --ai codex       # Codex CLI
-uipro init --ai qoder       # Qoder
-uipro init --ai roocode     # Roo Code
-uipro init --ai gemini      # Gemini CLI
-uipro init --ai trae        # Trae
-uipro init --ai opencode    # OpenCode
-uipro init --ai continue    # Continue
-uipro init --ai codebuddy   # CodeBuddy
-uipro init --ai droid       # Droid (Factory)
-uipro init --ai kilocode    # KiloCode
-uipro init --ai warp        # Warp
-uipro init --ai augment     # Augment
-uipro init --ai codewhale   # CodeWhale
-uipro init --ai zcode       # ZCode
-uipro init --ai amazonq     # Amazon Q Developer
-uipro init --ai openclaw    # OpenClaw (.agents/skills/)
-uipro init --ai universal   # Universal / Agent Standard (.agents/skills/)
-uipro init --ai all         # All assistants
-```
-
-The npm package is `ui-ux-pro-max-cli`; it still installs the `uipro` command. Older `uipro-cli` releases are stale and should not be used for current assets.
-
-### Global Install (Available for All Projects)
-
-```bash
-uipro init --ai claude --global   # Install to ~/.claude/skills/
-uipro init --ai cursor --global   # Install to ~/.cursor/skills/
-uipro init --ai zcode --global    # Install to ~/.zcode/skills/
-uipro init --ai universal --global # Install to ~/.agents/skills/
-```
-
-### Other CLI Commands
-
-```bash
-uipro versions              # List available versions
-uipro update                # Refresh skill files from installed CLI package
-uipro update --global       # Refresh global skill files from installed CLI package
-uipro init --offline        # Compatibility flag; installs bundled templates
-uipro init --dry-run        # Preview install actions without writing files
-uipro uninstall             # Remove skill (auto-detect platform)
-uipro uninstall --ai claude # Remove specific platform
-uipro uninstall --global    # Remove from global install
-```
+The `stack/` folder was removed in this fork for security. See SECURITY-NOTES.md in the owner's design-skills repo.
 
 ## Prerequisites
 
-Python 3.x is required for the search script (standard library only — the scripts install nothing and make no network calls).
+Python 3.x is required for the search script. The ui-ux-pro-max skill's `search.py` uses the standard library only: it installs nothing and makes no network calls. That does not cover the other bundled skills: the design skill's logo, CIP and icon scripts call external image services (Gemini, Atlas Cloud, MuAPI) and need the `google-genai` package for Gemini, and ui-styling's `shadcn_add.py` runs `npx`.
 
 Check if Python is installed:
 
@@ -485,14 +422,7 @@ Now, generate the code...
 
 The codebase has been restructured to use a **template-based generation system**. All platform-specific files (`.cursor/`, `.windsurf/`, `.kiro/`, `.factory/`, etc.) are now generated dynamically by the CLI.
 
-**Always use the CLI to install:**
-
-```bash
-npm install -g ui-ux-pro-max-cli
-uipro init --ai <platform>
-```
-
-This ensures you get the latest templates bundled with the installed CLI package and the correct file structure for your AI assistant. Update the npm package first when a new release is published.
+This fork is not installed with the CLI; see [Installation](#installation).
 
 ### For Contributors
 
@@ -638,70 +568,15 @@ claude
 
 Shell environment changes only apply to programs launched from that shell, so restart Claude Code after setting the variable. Claude Code clamps values above the active model's output limit; model and provider caps vary. Increasing this value can also increase latency and usage, and reduces the effective context available before auto-compaction. See the official [Claude Code environment-variable reference](https://code.claude.com/docs/en/env-vars#variables).
 
-### `uipro: unknown command 'uninstall'` or `unknown command 'update'`
+### Marketplace or `uipro` CLI install, update and uninstall problems
 
-Your installed version of `ui-ux-pro-max-cli` is outdated. Update it and retry:
-
-```bash
-npm install -g ui-ux-pro-max-cli@latest
-uipro uninstall
-```
-
-### `uipro uninstall` says "No installed AI skill directories detected"
-
-The skill was installed in a different directory than where you're running the command. Either:
-
-```bash
-# Option A — run from the project root where you originally installed it
-cd /path/to/your/project
-uipro uninstall
-
-# Option B — remove the global install
-uipro uninstall --global
-
-# Option C — remove manually
-rm -rf .claude/skills/ui-ux-pro-max   # Claude Code
-rm -rf .cursor/skills/ui-ux-pro-max   # Cursor
-rm -rf .windsurf/skills/ui-ux-pro-max # Windsurf
-rm -rf .agents/skills/ui-ux-pro-max   # Antigravity / Codex
-```
+This fork does not use the Claude Marketplace or the `uipro` CLI; see [Installation](#installation).
 
 ### Claude.ai's "Upload a skill" dialog says "Zip contains too many files (maximum 200)"
 
 Do not upload the full GitHub repository ZIP. It is a development checkout that includes source code, CLI assets, documentation, previews, and multiple bundled skills, so it exceeds Claude's 200-file upload limit. It is not a Claude skill upload artifact, and this project does not currently publish a separate manual-upload ZIP for Claude.ai.
 
-For Claude Code, install through the Marketplace:
-
-```bash
-/plugin marketplace add nextlevelbuilder/ui-ux-pro-max-skill
-/plugin install ui-ux-pro-max@ui-ux-pro-max-skill
-```
-
-Or use the CLI installer:
-
-```bash
-npx ui-ux-pro-max-cli init --ai claude
-```
-
-### Claude Marketplace install fails with "Zip file contains a symbolic link"
-
-This is a known issue with versions prior to v2.5.1. The repository used symlinks internally which some installation tools can't handle. **Fix:** use the CLI installer instead:
-
-```bash
-npm install -g ui-ux-pro-max-cli
-uipro init --ai claude
-```
-
-Or wait for the next release where this is resolved.
-
-### `npm install -g ui-ux-pro-max-cli` fails with permission error
-
-Use a Node version manager (recommended), or skip the global install entirely:
-
-```bash
-# npx without installing globally
-npx ui-ux-pro-max-cli init --ai claude
-```
+For Claude Code, use this fork as described in [Installation](#installation).
 
 ### Python not found when running design system commands
 

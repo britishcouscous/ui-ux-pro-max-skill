@@ -61,6 +61,8 @@ Script paths in this skill and its `references/` are relative to the directory t
 
 ### Component + Styling Setup
 
+Before running any `npx shadcn` command, including `scripts/shadcn_add.py` (which runs `npx shadcn@<version>`), tell the user it downloads the `shadcn` package from npm, and ask first.
+
 **Install shadcn/ui with Tailwind:**
 ```bash
 npx shadcn@latest init

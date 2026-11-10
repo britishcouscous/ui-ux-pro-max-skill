@@ -76,6 +76,8 @@ node scripts/validate-tokens.cjs --dir src/
 | States & Variants | `references/states-and-variants.md` |
 | Tailwind Integration | `references/tailwind-integration.md` |
 
+`references/tailwind-integration.md` includes shadcn commands. Before running any `npx shadcn` command, including `../ui-styling/scripts/shadcn_add.py` (which runs `npx shadcn@<version>`), tell the user it downloads the `shadcn` package from npm, and ask first.
+
 ## Component Spec Pattern
 
 | Property | Default | Hover | Active | Disabled |

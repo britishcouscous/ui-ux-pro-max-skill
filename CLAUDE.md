@@ -1,3 +1,5 @@
+> **Note for this fork (britishcouscous/ui-ux-pro-max-skill, branch `hardened`):** this is the hardened fork, used pinned by the owner's private design-skills repo. Never push to or open PRs against nextlevelbuilder/ui-ux-pro-max-skill. Any PR goes to britishcouscous/ui-ux-pro-max-skill with base `hardened`: `gh pr create --repo britishcouscous/ui-ux-pro-max-skill --base hardened`. Do not run the npm scripts in this file (such as `npm run sync:assets` or `npm run check:assets`) unless the user asks.
+
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
@@ -104,7 +106,7 @@ When modifying files:
 
 ## Prerequisites
 
-Python 3.x (no external dependencies required)
+Python 3.x. The ui-ux-pro-max skill's `search.py` needs no external dependencies and makes no network calls. That does not cover the other bundled skills: the design skill's logo, CIP and icon scripts call external image services (Gemini, Atlas Cloud, MuAPI) and need the `google-genai` package for Gemini, and ui-styling's `shadcn_add.py` runs `npx`.
 
 **Note:** On Windows, use `python` instead of `python3` to run the scripts.
 
@@ -115,4 +117,4 @@ Never push directly to `main`. Always:
 1. Create a new branch: `git checkout -b feat/...` or `fix/...`
 2. Commit changes
 3. Push branch: `git push -u origin <branch>`
-4. Create PR: `gh pr create`
+4. Create PR: `gh pr create --repo britishcouscous/ui-ux-pro-max-skill --base hardened` (see the fork note at the top)

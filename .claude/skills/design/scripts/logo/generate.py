@@ -51,6 +51,14 @@ from urllib.request import HTTPRedirectHandler, Request, build_opener
 # Load environment variables
 def load_env():
     """Load .env files in priority order"""
+    # Only the names this script reads, so other .env lines stay out of os.environ.
+    allowed_keys = {
+        "GEMINI_API_KEY",
+        "ATLASCLOUD_API_KEY",
+        "MUAPI_API_KEY",
+        "GEMINI_FLASH_IMAGE_MODEL",
+        "GEMINI_PRO_IMAGE_MODEL",
+    }
     env_paths = [
         Path(__file__).parent.parent.parent / ".env",
         Path.home() / ".claude" / "skills" / ".env",
@@ -64,7 +72,7 @@ def load_env():
                     line = line.strip()
                     if line and not line.startswith("#") and "=" in line:
                         key, value = line.split("=", 1)
-                        if key not in os.environ:
+                        if key in allowed_keys and key not in os.environ:
                             os.environ[key] = value.strip("\"'")
 
 
@@ -170,12 +178,23 @@ def enhance_prompt(base_prompt, style=None, industry=None, brand_name=None):
     return LOGO_PROMPT_TEMPLATE.format(prompt=combined)
 
 
+def _origin(url):
+    """Return (hostname, port) of an HTTPS URL; the port defaults to 443."""
+    parsed = urlparse(url)
+    return parsed.hostname, parsed.port or 443
+
+
 class _SafeRedirectHandler(HTTPRedirectHandler):
     """Reject redirects to non-public or non-HTTPS destinations."""
 
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         _validate_public_https_url(newurl)
-        return super().redirect_request(req, fp, code, msg, headers, newurl)
+        new = super().redirect_request(req, fp, code, msg, headers, newurl)
+        # Never forward the provider API key to a different origin.
+        if new is not None and _origin(newurl) != _origin(req.full_url):
+            new.remove_header("Authorization")
+            new.remove_header("X-api-key")
+        return new
 
 
 def _validate_public_https_url(url):
@@ -367,10 +386,14 @@ def _muapi_result_url(response):
             )
         try:
             _validate_public_https_url(result_url)
+            result_origin = _origin(result_url)
         except ValueError as exc:
             raise RuntimeError(
                 "MuAPI creation response did not include a valid HTTPS result URL"
             ) from exc
+        # Polling sends x-api-key, so never poll a host the response chose.
+        if result_origin != _origin(MUAPI_API_BASE):
+            raise RuntimeError("MuAPI result URL is not on the MuAPI API host")
         return result_url
 
     raise RuntimeError(
